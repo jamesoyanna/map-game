@@ -1,0 +1,2 @@
+# map-game
+A simple Web Game that has a map of Nigeria with some states represented, to be played by kids so that when each state pops up, the kids can catch it and place each in the right location.   For each attempt to place the states in the correct location, they score a point. The game has a timer to show who has finished on time.   The game has a leader board that aggregates the scores of each player and the winning player is determined. The players also have a game profile.
