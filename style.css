@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+}
+
+.slider {
+  background-color: green;
+  color: white;
+  width: fit-content;
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.map-container {
+  width: 600px;
+  min-width: 300px;
+}
+
+.map-container img {
+  width: 100%;
+}
