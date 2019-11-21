@@ -1,117 +1,169 @@
-/** available states */
-const states = ["edo", "oyo", ];
+/** all states in Nigeria */
+const states = [
+    "edo",          "oyo",      "osun",       "ekiti",      "ondo", 
+    "lagos",        "kwara",    "delta",      "enugu",      "anambra",
+    "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
+    "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
+    "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
+    "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
+    "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
+    "crossriver",
+];
 
 
-// defining the posible drop point on the screen will help to define
-// accuracy of the dropped object...
+/**
+ * generates a random rgb color in returns it
+ * : return-type :: String
+ */
+const generate_rand_color = () => {
+  return `rgb(${
+            Math.floor(Math.random() * 225)}, ${
+                  Math.floor(Math.random() *225)}, ${
+                        Math.floor(Math.random() * 255)})`
+}
 
-// The location of each state on the screen covers a certain point,
-// defining the point of each state on the screen will help to tell the
-// accuracy of the dropped object
-
-const posibleDropZone = {
-
-  /** edo state */
-  edo: {
-    xCoord : [ 143, 181, 214 ],
-    yCoord : [ 375, 427]
-  },
-
-  oyo: {
-    xCoord : [ 81, 36, 95 ],
-    yCoord : [ 288, 359, 370 ],
-  }, 
-
+/**
+ * get the next state from the list of state and returns it...
+ * this methods reduces the states array when a new state is returned
+ * 
+ * : return-type :: String
+ */
+const next_state = () => {
+  let num_of_state_remaining = Math.floor(Math.random() * states.length)
+  return states.pop(num_of_state_remaining)
 }
 
 
-// create an interactable target :: which is basically an object that
-// can respond to drag, resize etc.
-const slider = interact(".slider");
+/**
+ * this changes the id and innerText property of a draggable
+ * @param {DomElement} draggable a dom element that can be dragged
+ */
+const change_draggable_prop = (draggable) => {
+  let state = next_state()
+  draggable.id = `drag-${state}`
+  draggable.innerText = state
+}
 
-// the default position of the interactable target on the device
-// view port
-const sliderPos = { x: 0, y: 0 };
+/********************************************************************************** */
+//  QUICK BRIEF
+//        this game comprises of DOM (Document Object Model) element that can be 
+//        dragged and other DOM (Document Object Model) elements that can be dropped.
+//        let's actually make DOM elements that can be dragged draggable
+/********************************************************************************** */
 
-// include a draggable event to the interactable target.
-slider.draggable({
-  listeners: {
-    // when dragging starts, do nothing
-    start(event) {},
 
-    // when the interactable target is moved, update it's
-    // horizontal and vertical position using the co-ordinate of the
-    // dragger -- which in this case would be the mouse.
-    move(event) {
-      sliderPos.x += event.dx;
-      sliderPos.y += event.dy;
+// DOM elements that can be dragged have class name `draggable`, let's actually include
+// the event to make them draggable
 
-      // use css transform property to actually change the location
-      event.target.style.transform = `translate(${sliderPos.x}px, ${sliderPos.y}px)`;
-    }
+
+
+
+
+
+/**
+ * This handler will basically be used for changing styling DOM draggable 
+ * dragging them around...
+ * @param {DragEvent} event a drag event element
+ */
+const ondrag_handler = (event) => {
+  // change th color
+  event
+    .currentTarget
+    .style
+    .background = "#35d635";
+
+  event 
+    .currentTarget
+    .style 
+    .transform = `translate(${event.screenX}, ${event.screenY})`
+}
+
+
+
+const ondragstart_handler = (event) => {
+  // enable us to retrieve the element that is being dragged
+  // when ever we drop it
+  event
+    .dataTransfer
+    .setData('text/plain', event.target.id);
+
+  console.log("drag start");
+}
+
+
+let draggable = document.querySelector('.draggable');
+draggable.addEventListener('dragstart', ondragstart_handler);
+draggable.addEventListener('drag', ondrag_handler);
+
+
+
+
+/**
+ * Allows dropzones to accept draggable as it browsers disables
+ * it by default
+ * @param {DragOver} event a dragover event
+ */
+const ondragover_handler = (event) => {
+  event.preventDefault();
+  console.log("accept drop")
+}
+
+
+
+
+/**
+ * This retrieves the draggable object that was dropped on 
+ * a dropzone and computes game logic
+ * @param {DropEvent} event a drop event
+ */
+const ondrop_handler = (event) => {
+  const id = event
+                .dataTransfer
+                .getData('text');
+
+  const draggableelement = document.getElementById(id);
+  const dropzone = event.target;
+  /**
+   * 
+   *    GAME LOGIC
+   * 
+   */
+  let dropzoneId = dropzone.id;
+  let draggableId = draggableelement.id.split("-")[1];
+
+  let value = dropzoneId.includes(draggableId)
+  
+  if(value === true){
+    // generate a random color to fill the state path
+    let color = generate_rand_color();
+    
+    let state = document.querySelector(`path#${draggableId}`);
+    state.setAttribute("style", `fill: ${color} !important`);
+
+    // remove dragover and drop event listener from the dropzone
+    dropzone.removeEventListener('dragover', ondragover_handler);
+    dropzone.removeEventListener('drop', ondrop_handler);
+
+    // change draggable property
+    change_draggable_prop(draggableelement);
   }
+
+  // change the color of draggable element
+  draggable.style.background = "green"
+  
+
+  event
+      .dataTransfer
+      .clearData();
+}
+
+
+
+
+// the elements that will be used as dropzones are svg path
+// there's need to iterate through and then set the ondragover_handler
+let countryStates = document.querySelectorAll('.state');
+countryStates.forEach((state) => {
+  state.addEventListener('dragover', ondragover_handler);
+  state.addEventListener('drop', ondrop_handler);
 });
-
-
-
-
-const check_state_drop_zone = (event) => {
-  let draggedState;     // object to represent state dragged
-  let draggedStateYpos; // represent current y position of dragged state
-  let draggedSteteXpos; // represent current x position of dragged state
-
-  // transverse through the list of states and get the state that
-  // matches the dropped object
-  states.map((state) => {
-    if (state === event.dragEvent.currentTarget.innerText){
-      draggedState = event.dragEvent.currentTarget;
-      draggedStateXpos = event.dragEvent.client.x;
-      draggedStateYpos = event.dragEvent.client.y;
-    }
-  });
-
-  console.log(
-    draggedState.innerText, 
-    "\nX --> ", draggedStateXpos,
-    "\nY --> ", draggedStateYpos
-  );
-
-  // retrieve the possible values of the xCoordinate of the dragged state
-  let possibleXcoord = Object.values(
-    posibleDropZone[draggedState.innerText].xCoord);
-
-  // retrieve the possible values of the yCoordinate of the dragged state
-  let possibleYcoord = Object.values(
-    posibleDropZone[draggedState.innerText].yCoord);
-
-  // get the min and max x position
-  stateMinXcoord = Math.min(...possibleXcoord)
-  stateMaxXcoord = Math.max(...possibleXcoord)
-
-  // get the min and max y position 
-  stateMaxYcoord = Math.max(...possibleYcoord)
-  stateMinYcoord = Math.min(...possibleYcoord)
-
-  // check if the dragged object x and y position is greater than
-  // the min but lesser the max of both the x and y coordinate of the 
-  // state representation on the map
-  if (draggedStateXpos >= stateMinXcoord 
-      && draggedStateXpos <= stateMaxXcoord) {
-
-    if(draggedStateYpos >= stateMinYcoord 
-      && draggedStateYpos <= stateMaxYcoord) {
-
-      console.log("true");
-      // increase point scored for the player for getting the 
-      // location of state on the map
-
-    }
-
-  }
-}
-
-
-
-interact('.drop-location').dropzone({
-  ondrop: check_state_drop_zone
-})
