@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
 }
 
-.slider {
+.draggable {
   background-color: green;
   color: white;
   width: fit-content;
