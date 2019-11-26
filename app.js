@@ -70,7 +70,7 @@ const ondrag_handler = (event) => {
   event
     .currentTarget
     .style
-    .background = "#35d635";
+    .background = "#07fff4";
 
   event 
     .currentTarget
@@ -151,7 +151,7 @@ const ondrop_handler = (event) => {
   }
 
   // change the color of draggable element
-  draggable.style.background = "green"
+  draggable.style.background = "#fbff05"
   
 
   event
