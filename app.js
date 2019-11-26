@@ -1,13 +1,12 @@
 /** all states in Nigeria */
 const states = [
-    "edo",          "oyo",      "osun",       "ekiti",      "ondo", 
+    "oyo",          "osun",     "ekiti",      "ondo",       "crossriver",
     "lagos",        "kwara",    "delta",      "enugu",      "anambra",
     "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
     "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
     "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
     "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
-    "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
-    "crossriver",
+    "imo",          "abia",     "ebonyi",     "nassarawa",   "katsina",
 ];
 
 
@@ -123,6 +122,7 @@ const ondrop_handler = (event) => {
 
   const draggableelement = document.getElementById(id);
   const dropzone = event.target;
+
   /**
    * 
    *    GAME LOGIC
@@ -137,6 +137,7 @@ const ondrop_handler = (event) => {
     // generate a random color to fill the state path
     let color = generate_rand_color();
     
+    console.log(draggableId)
     let state = document.querySelector(`path#${draggableId}`);
     state.setAttribute("style", `fill: ${color} !important`);
 
