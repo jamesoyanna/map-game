@@ -161,11 +161,25 @@ const ondrop_handler = (event) => {
 
 
 
-
-// the elements that will be used as dropzones are svg path
+ // the elements that will be used as dropzones are svg path
 // there's need to iterate through and then set the ondragover_handler
 let countryStates = document.querySelectorAll('.state');
 countryStates.forEach((state) => {
   state.addEventListener('dragover', ondragover_handler);
   state.addEventListener('drop', ondrop_handler);
 });
+
+
+
+
+
+/***
+ * IMPLEMENT TIMER FUNCTIONALITY
+ */
+
+let timerEle = document.getElementById('timer');
+let timeCount = 0;
+setInterval(() => {
+  timeCount = timeCount + 1;
+  timerEle.innerText = timeCount;
+}, 1000);
