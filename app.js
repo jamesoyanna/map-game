@@ -7,6 +7,7 @@ const states = [
     "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
     "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
     "imo",          "abia",     "ebonyi",     "nassarawa",   "katsina",
+    "bayelsa"
 ];
 
 
