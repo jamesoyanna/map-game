@@ -6,6 +6,7 @@
 
 body {
   font-family: sans-serif;
+
 }
 
 .draggable {
@@ -76,3 +77,30 @@ body {
 .bg-green {
   background-color: #04d304;
 }
+
+ .button{
+  height: 50px;
+  width: 90px;
+  cursor: pointer;
+  color: #fff;
+   background: brown;
+   border-radius: 5px;
+   margin-left: 20px;
+}
+
+
+#ten-countdown{
+    /* text-align: center; */
+    border: 5px solid #004853;
+    display:inline;
+    padding: 5px;
+    color: #004853;
+    font-family: Verdana, sans-serif, Arial;
+    font-size: 40px;
+    font-weight: bold;
+    text-decoration: none;
+}
+    
+
+
+    
