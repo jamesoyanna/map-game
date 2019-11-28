@@ -187,7 +187,7 @@ function countdown(elementName, minutes, seconds) {
   function updateTimer() {
     msLeft = endTime - +new Date();
     if (msLeft < 1000) {
-      element.innerHTML = "Time is up!";
+      element.innerHTML = "Game Over!";
     } else {
       time = new Date(msLeft);
       hours = time.getUTCHours();
