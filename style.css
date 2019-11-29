@@ -17,11 +17,14 @@ body {
   border-radius: 8px;
   font-size: 17px;
   position: absolute;
-  top: 20vh;
+  bottom: 22vh;
   left: 25px;
   z-index: 2;
 }
 
+/**
+  timer styles
+**/
 .timer-container {
   position: absolute;
   top: 10px;
@@ -45,6 +48,9 @@ body {
 .timer-container .timer-content #timer {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+/**
+   end of timer styles
+**/
 
 .svg-container {
   position: absolute;
@@ -59,12 +65,17 @@ body {
   align-items: center;
 }
 
+
 .drop-location {
   width: 600px;
   min-width: 300px;
   height: 600px;
 }
 
+
+/*
+  country representing colors styling
+*/
 .bg-color {
   width: 100%;
   height: 33.3vh;
@@ -78,20 +89,105 @@ body {
   background-color: #04d304;
 }
 
- .button{
-  height: 50px;
-  width: 90px;
-  cursor: pointer;
-  color: #fff;
-   background: brown;
-   border-radius: 5px;
-   margin-left: 20px;
-}
+/*
+  end of country representing colors styling
+*/
 
 
 #countdown{
-    padding: 5px;
+    padding: 10px 5px;
     color: #ffffff;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 900;
-}    
+} 
+
+
+/*
+  scores styling
+*/
+.scores {
+  position: absolute;
+  top: 63px;
+  left: 8px;
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.scores .score {
+  box-shadow: .5px .5px 43px -6px #98f998;
+  border-radius: 6px;
+  color: black;
+  line-height: 27px;
+  padding: 3px;
+}
+
+.scores .score p {
+  font-size: 15px;
+  color: #0000008c;
+}
+
+.scores .score span {
+  font-weight: 600;
+}
+
+/*
+  end of scores styling
+*/
+
+
+/*
+  target and level styling
+*/
+.target-lvl {
+  position: absolute;
+  top: 63px;
+  right: 12px;
+  display: flex;
+  width: 120px;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.target-lvl .t-l {
+  box-shadow: .5px .5px 43px -6px #98f998;
+  border-radius: 6px;
+  color: black;
+  line-height: 27px;
+  padding: 3px 8px;
+}
+
+.target-lvl .t-l p {
+  font-size: 15px;
+  color: #0000008c;
+}
+
+.target-lvl .t-l span {
+  font-weight: 600;
+}
+
+/*
+  end of target and level styling
+*/
+
+.slideup {
+  animation: slide-up 1.4s ease;
+}
+
+
+@keyframes slide-up {
+  0% {
+      opacity: 0;
+      font-size: 40px;
+      color: coral;
+      transform: translateY(90px);
+  }
+  100% {
+      opacity: 1;
+      color: black;
+      transform: translateY(0);
+  }
+}
