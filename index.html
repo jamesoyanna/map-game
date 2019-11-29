@@ -11,26 +11,26 @@
 </head>
 
 <body>
- <!-- Count down timer-->
- <div id="container">
-   <div class="map-container">
-<!-- timer DOM element -->
-    <div class="timer-container">
-    <div id="ten-countdown"></div>
-<button class="button" id="game">Play Game</button>
-<!--Previous code
-	<div class="timer-content">
-	<p id="timer"></p>
-	</div>
-	-->
-</div>
+	<div id="container">
+		<div class="map-container">
+
+			<!-- count down timer-->
+			<div class="timer-container">
+				<div id="countdown"></div>
+			</div>
+			<!--** end of count down timer-->
 
 
+			<!-- country color -->
 			<div class="bg-color bg-green"></div>
 			<div class="bg-color bg-white"></div>
 			<div class="bg-color bg-green"></div>
+			<!--** end of country color -->
+
+
+			<!-- map -->
 			<div class="svg-container">
-				<p id="drag-edo" class="draggable" draggable="true">edo</p>
+				<p id="drag-" class="draggable" draggable="true"></p>
 				<?xml version="1.0"?>
 				<svg baseprofile="tiny" fill="#7c7c7c" class="drop-location" height="813" stroke="#ffffff"
 					stroke-linecap="round" stroke-linejoin="round" stroke-width="2" version="1.2" viewbox="0 0 1000 813"
@@ -185,17 +185,10 @@
 					</path>
 				</svg>
 			</div>
+			<!--** end of map  -->
 		</div>
 	</div>
 
-
-	<!-- 
-		*
-		*
-			Programming Script
-		*
-		*
-	-->
 	<script src='app.js'></script>
 </body>
 
