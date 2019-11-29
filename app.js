@@ -10,6 +10,13 @@ const states = [
     "bayelsa"
 ];
 
+// score gotten per correct answer
+const correctScore = 15;
+
+// bonus score for getting three correct score in a row
+const rowScore = 15 * 3;
+
+
 // retrieve all states available on map DOM object
 let countryStates = document.querySelectorAll('.state');
 
@@ -96,6 +103,10 @@ const ondrag_handler = (event) => {
   }
   
   
+  /*
+      Set a listener on a draggable element and randomly set 
+      a state on the draggable that'll be displayed at first.
+  */
   let draggable = document.querySelector('.draggable');
   draggable.addEventListener('dragstart', ondragstart_handler);
   draggable.addEventListener('drag', ondrag_handler);
@@ -104,14 +115,67 @@ const ondrag_handler = (event) => {
   
   
   
-  /**
-   * Allows dropzones to accept draggable as it browsers disables
-   * it by default
-   * @param {DragOver} event a dragover event
-   */
+/**
+ * Allows dropzones to accept draggable as it browsers disables
+ * it by default
+ * @param {DragOver} event a dragover event
+ */
 const ondragover_handler = (event) => {
   event.preventDefault();
   console.log("accept drop")
+}
+
+
+/**
+ * Colors a dropzone with the specified rgb color value. The dropzone to be
+ * colored is retrieved by the id provided on method call.
+ * @param {String} color an rgb color value
+ * @param {DOM Element Id} id a property to uniquely identify a DOM element
+ */
+const colorDropzoneBackground = ( color, id ) => {
+  let state = document.querySelector(`path#${id}`);
+  state.setAttribute("style", `fill: ${color} !important`);
+}
+
+/**
+ * Removes dragover and drop listener from a dropzone
+ * @param {DOM Element} dropzone a svg segment ( path )
+ */
+const removeDropzoneListener = ( dropzone) => {
+  dropzone.removeEventListener('dragover', ondragover_handler);
+  dropzone.removeEventListener('drop', ondrop_handler);
+}
+
+
+/**
+ * Animates a DOM element by including a prebuilt animate
+ * css to the element's css class. The animate css class 
+ * will be added if signal is true and removed if signal
+ * is false
+ * @param {DOM Element} element DOM element to animate
+ * @param {Boolean} signal determines the inclusion or 
+ * removal of css animate class
+ */
+const animateElement = (element, signal=true) => {
+  if (signal==true){
+    element.classList.add('slideup');
+  }
+  else {
+    element.classList.remove('slideup');
+  }
+}
+
+/**
+ * Increments the current game play store by the value 
+ * provided as score
+ * @param {Integer} score the value to be computed as score
+ */
+const incrementCurrentScore = ( score ) => {
+  let currentScoreDomElement = document.getElementById("current-score");
+  animateElement(currentScoreDomElement, false)
+  let newScore = parseInt(currentScoreDomElement.innerText) + score;
+  currentScoreDomElement.innerText = newScore;
+  animateElement(currentScoreDomElement, true);
 }
 
 
@@ -123,6 +187,10 @@ const ondragover_handler = (event) => {
  * @param {DropEvent} event a drop event
  */
 const ondrop_handler = (event) => {
+  // this will help to track if three correct score has been
+  // gotten so a bonus can be assigned
+  let rowCount = 0;
+
   const id = event
                 .dataTransfer
                 .getData('text');
@@ -141,19 +209,36 @@ const ondrop_handler = (event) => {
   let value = dropzoneId.includes(draggableId)
   
   if(value === true){
+    // increment row count
+    rowCount += 1;
+
     // generate a random color to fill the state path
     let color = generate_rand_color();
     
-    console.log(draggableId)
-    let state = document.querySelector(`path#${draggableId}`);
-    state.setAttribute("style", `fill: ${color} !important`);
+    // color dropzone on correct drop
+    colorDropzoneBackground(color, draggableId);
 
     // remove dragover and drop event listener from the dropzone
-    dropzone.removeEventListener('dragover', ondragover_handler);
-    dropzone.removeEventListener('drop', ondrop_handler);
+    removeDropzoneListener(dropzone);
 
     // change draggable property
     change_draggable_prop(draggableelement);
+
+
+    // set score for correct drop 
+    if (rowCount === 3){
+      // increment current score with bonus score value
+      incrementCurrentScore(rowScore);
+    } 
+    else {
+      // increment current score with correct score value
+      incrementCurrentScore(correctScore)
+    }
+
+  }
+  else {
+    // reset rowCount 
+    rowCount = 0;
   }
 
   // change the color of draggable element
