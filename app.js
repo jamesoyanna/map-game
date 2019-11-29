@@ -16,6 +16,10 @@ const correctScore = 15;
 // bonus score for getting three correct score in a row
 const rowScore = 15 * 3;
 
+// this will help to track if three correct score has been
+// gotten so a bonus can be assigned
+let rowCount = 0;
+
 
 // retrieve all states available on map DOM object
 let countryStates = document.querySelectorAll('.state');
@@ -187,10 +191,6 @@ const incrementCurrentScore = ( score ) => {
  * @param {DropEvent} event a drop event
  */
 const ondrop_handler = (event) => {
-  // this will help to track if three correct score has been
-  // gotten so a bonus can be assigned
-  let rowCount = 0;
-
   const id = event
                 .dataTransfer
                 .getData('text');
@@ -225,20 +225,21 @@ const ondrop_handler = (event) => {
     change_draggable_prop(draggableelement);
 
 
+    console.log(rowCount)
     // set score for correct drop 
-    if (rowCount === 3){
+    if (rowCount >= 3){
       // increment current score with bonus score value
+      console.log("row score == " + rowScore)
       incrementCurrentScore(rowScore);
+      // reset rowCount
+      rowCount = 0;
     } 
     else {
       // increment current score with correct score value
+      console.log("correct score == " + correctScore)
       incrementCurrentScore(correctScore)
     }
 
-  }
-  else {
-    // reset rowCount 
-    rowCount = 0;
   }
 
   // change the color of draggable element
@@ -359,7 +360,7 @@ const countdown = (elementName, minutes, seconds) => {
   
   updateTimer();
 }
-countdown("countdown", 0, 20);
+countdown("countdown", 1, 20);
 
 
 // let timerEle = document.getElementById('timer');
