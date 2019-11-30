@@ -377,6 +377,14 @@ const closePopupWindow = () => {
   document.querySelector('.popup').style.display = 'none';
 }
 
+/**
+ * This helps to set the name of the playing player on game play
+ * @param {String} name representing the playing player
+ */
+const setPlayerName = ( name ) => {
+  document.querySelector('.pp-name').innerText = name
+}
+
 
 const startGamePlay = ( event ) => {
 
@@ -385,6 +393,9 @@ const startGamePlay = ( event ) => {
 
   // next close the popup window
   closePopupWindow();
+
+  // set player's name 
+  setPlayerName(playerName);
 
   // set game start to true
   GAME_START_FLAG = true;

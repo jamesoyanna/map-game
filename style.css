@@ -169,8 +169,12 @@ body {
   font-weight: 600;
 }
 
+/*
+  end of target and level styling
+*/
 
-/* receiving input */
+
+/* startup window popup  */
 .popup {
   position: absolute;
   top: 0px;
@@ -243,11 +247,26 @@ body {
   border: 1px solid #ffeb3b;
 }
 
+/* end of startup window popup  */
 
 
-/*
-  end of target and level styling
-*/
+.playing-player-name {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-weight: 550;
+  color: #b1003c
+}
+
+.playing-player-name .pp-name {
+  color: #000;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+
+
+
 
 .slideup {
   animation: slide-up 1.4s ease;
