@@ -12,6 +12,7 @@ const states = [
 
 let GAME_START_FLAG = false;
 let playerName = 'Strange';
+let draggable
 
 // score gotten per correct answer
 const correctScore = 15;
@@ -394,14 +395,14 @@ const startGamePlay = ( event ) => {
     Set a listener on a draggable element and randomly set 
     a state on the draggable that'll be displayed at first.
   */
-  let draggable = document.querySelector('.draggable');
+  draggable = document.querySelector('.draggable');
   draggable.addEventListener('dragstart', ondragstart_handler);
   draggable.addEventListener('drag', ondrag_handler);
   change_draggable_prop(draggable);
   
 
   if (GAME_START_FLAG == true){
-    countdown("countdown", 1, 20);
+    countdown("countdown", 0, 20);
   }
 }
 
