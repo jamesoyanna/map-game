@@ -1,18 +1,27 @@
 /** all states in Nigeria */
-const states = [
+let states = [
     "oyo",          "osun",     "ekiti",      "ondo",       "crossriver",
-    "lagos",        "kwara",    "delta",      "enugu",      "anambra",
-    "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
-    "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
-    "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
-    "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
-    "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
-    "bayelsa"
+    // "lagos",        "kwara",    "delta",      "enugu",      "anambra",
+    // "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
+    // "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
+    // "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
+    // "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
+    // "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
+    // "bayelsa",      "edo",
 ];
 
 let GAME_START_FLAG = false;
 let playerName = 'Strange';
-let draggable
+let draggable;
+let gameCompleted = false;
+let tempStates = [...states];
+
+/**
+ * helps to track if the draggable name was changed... can accept a true
+ * or false value... when true it means the name was changed.. when false
+ * it means the name wasn't set 
+ */
+let draggableNameSet = false;
 
 // score gotten per correct answer
 const correctScore = 15;
@@ -47,19 +56,31 @@ const generate_rand_color = () => {
  * : return-type :: String
  */
 const next_state = () => {
-  let num_of_state_remaining = Math.floor(Math.random() * states.length)
-  return states.splice(num_of_state_remaining, 1);
+  if(states.length > 0) {
+    let num_of_state_remaining = Math.floor(Math.random() * states.length)
+    return states.splice(num_of_state_remaining, 1);
+  }
 }
 
 
 /**
- * this changes the id and innerText property of a draggable
+ * this changes the id and innerText property of a draggable.
+ * returns true when changes are made else false is returned
  * @param {DomElement} draggable a dom element that can be dragged
  */
 const change_draggable_prop = (draggable) => {
-  let state = next_state()
-  draggable.id = `drag-${state}`
-  draggable.innerText = state
+  let state = next_state();
+  // if the state returned is not undefined 
+  if (state){
+    draggable.id = `drag-${state}`
+    draggable.innerText = state
+    return true;
+  } 
+  // if the state returned is undefined
+  else {
+    draggable.style.display = 'none';
+    return false
+  }
 }
 
 
@@ -96,19 +117,19 @@ const ondrag_handler = (event) => {
     .currentTarget
     .style 
     .transform = `translate(${event.screenX}, ${event.screenY})`
-  }
+}
   
   
   
-  const ondragstart_handler = (event) => {
-    // enable us to retrieve the element that is being dragged
-    // when ever we drop it
-    event
-    .dataTransfer
-    .setData('text/plain', event.target.id);
-    
-    console.log("drag start");
-  }
+const ondragstart_handler = (event) => {
+  // enable us to retrieve the element that is being dragged
+  // when ever we drop it
+  event
+  .dataTransfer
+  .setData('text/plain', event.target.id);
+  
+  console.log("drag start");
+}
     
   
   
@@ -123,6 +144,7 @@ const ondragover_handler = (event) => {
 }
 
 
+
 /**
  * Colors a dropzone with the specified rgb color value. The dropzone to be
  * colored is retrieved by the id provided on method call.
@@ -134,6 +156,8 @@ const colorDropzoneBackground = ( color, id ) => {
   state.setAttribute("style", `fill: ${color} !important`);
 }
 
+
+
 /**
  * Removes dragover and drop listener from a dropzone
  * @param {DOM Element} dropzone a svg segment ( path )
@@ -142,6 +166,18 @@ const removeDropzoneListener = ( dropzone) => {
   dropzone.removeEventListener('dragover', ondragover_handler);
   dropzone.removeEventListener('drop', ondrop_handler);
 }
+
+
+/**
+ * adds dragover and drop listener from a dropzone
+ * @param {DOM Element} dropzone a svg segment ( path )
+ */
+const addDropzoneListener = (dropzone) => {
+  dropzone.addEventListener('dragover', ondragover_handler);
+  dropzone.addEventListener('drop', ondrop_handler);
+}
+
+
 
 
 /**
@@ -162,6 +198,10 @@ const animateElement = (element, signal=true) => {
   }
 }
 
+
+
+
+
 /**
  * Increments the current game play store by the value 
  * provided as score
@@ -173,6 +213,22 @@ const incrementCurrentScore = ( score ) => {
   let newScore = parseInt(currentScoreDomElement.innerText) + score;
   currentScoreDomElement.innerText = newScore;
   animateElement(currentScoreDomElement, true);
+}
+
+
+
+const displayFinishingContent = ( ) => {
+  // display the finishing popup as it is hidden by default
+  document.querySelector('.game-finish-popup').style.display = 'flex';
+
+  // set the finishing score on popup
+  let currentScore = document.getElementById('current-score').innerText;
+  document.querySelector('.finishing-score').innerText = currentScore;
+
+  // set game finish time
+  let finishTime = document.getElementById('countdown').innerText.split(':');
+  document.querySelector('.game-finishing-time').innerText = 
+                          `${finishTime[0]} minutes ${finishTime[1]} seconds`;
 }
 
 
@@ -215,24 +271,39 @@ const ondrop_handler = (event) => {
     removeDropzoneListener(dropzone);
 
     // change draggable property
-    change_draggable_prop(draggableelement);
+    draggableNameSet = change_draggable_prop(draggable);
+
+    console.log("Is name set on draggable ? === " + draggableNameSet);
+
 
 
     console.log(rowCount)
     // set score for correct drop 
     if (rowCount >= 3){
       // increment current score with bonus score value
-      console.log("row score == " + rowScore)
       incrementCurrentScore(rowScore);
       // reset rowCount
       rowCount = 0;
     } 
     else {
       // increment current score with correct score value
-      console.log("correct score == " + correctScore)
       incrementCurrentScore(correctScore)
     }
 
+    
+    // if draggable name was not set, it means a value that cannot
+    // be set was returned ( e.g undefined is not settable )
+    // which denotes that the player has completed the game
+    if (draggableNameSet === false ) {
+        // reset values
+        GAME_START_FLAG = false;
+        gameCompleted = true;
+        displayFinishingContent();
+    }
+
+    if (gameCompleted === true) {
+      console.log("Game over")
+    }
   }
 
   // change the color of draggable element
@@ -324,29 +395,36 @@ const countdown = (elementName, minutes, seconds) => {
         state.removeEventListener('dragover', ondragover_handler);
         state.removeEventListener('drop', ondrop_handler);
       });
-
     } 
 
     else {
-      time = new Date(msLeft);
-      hours = time.getUTCHours();
-      mins = time.getUTCMinutes();
+      // only compute timing if game have started and game is not yet 
+      // completed
+      if(GAME_START_FLAG === true && gameCompleted === false){
+        time = new Date(msLeft);
+        hours = time.getUTCHours();
+        mins = time.getUTCMinutes();
+  
+        // compute the time value to be displayed
+        // (step 1) if we have hours greater than 0, then display
+        // format would be `hours:minutes:seconds` 
+  
+        // (step 2) if we have hours less than or equal to 0, then 
+        // display format would be `minute:seconds`
+        currentCountDownTime = (
+          hours > 0 ? 
+              `${hours}:${twoDigits(mins)}:${twoDigits(time.getUTCSeconds())}`        
+            :            
+              `${twoDigits(mins)}:${twoDigits(time.getUTCSeconds())}`
+        );
+  
+        element.innerHTML = currentCountDownTime;
+        setTimeout(updateTimer, 1000);
+      }
 
-      // compute the time value to be displayed
-      // (step 1) if we have hours greater than 0, then display
-      // format would be `hours:minutes:seconds` 
-
-      // (step 2) if we have hours less than or equal to 0, then 
-      // display format would be `minute:seconds`
-      currentCountDownTime = (
-        hours > 0 ? 
-            `${hours}:${twoDigits(mins)}:${twoDigits(time.getUTCSeconds())}`        
-          :            
-            `${twoDigits(mins)}:${twoDigits(time.getUTCSeconds())}`
-      );
-
-      element.innerHTML = currentCountDownTime;
-      setTimeout(updateTimer, 1000);
+      else {
+        // display game completion box
+      }
     }
   }
 
@@ -370,12 +448,19 @@ const receivePlayerName = () => {
   }
 }
 
+
+
+
 /**
  * Hides the startup screen called popup window
  */
 const closePopupWindow = () => {
   document.querySelector('.popup').style.display = 'none';
 }
+
+
+
+
 
 /**
  * This helps to set the name of the playing player on game play
@@ -386,7 +471,15 @@ const setPlayerName = ( name ) => {
 }
 
 
+
+
+
 const startGamePlay = ( event ) => {
+  /**
+   * 
+   * EVERY CONFIGURATIONS HERE IS A ONE TIME SETTING,
+   * THEY ARE ONLY CALLED ONCE WHEN START GAME BUTTON IS CLICKED ON
+   */
 
   // first retrieve the value of player-name input
   let tempName = receivePlayerName()
@@ -400,10 +493,12 @@ const startGamePlay = ( event ) => {
   // set player's name 
   setPlayerName(playerName);
 
-  // set game start to true
+  // set game start to true and game completed to false
   GAME_START_FLAG = true;
+  gameCompleted = false;
 
-
+  // repopulate states 
+  states = [...tempStates];
 
   /*
     Set a listener on a draggable element and randomly set 
@@ -412,11 +507,33 @@ const startGamePlay = ( event ) => {
   draggable = document.querySelector('.draggable');
   draggable.addEventListener('dragstart', ondragstart_handler);
   draggable.addEventListener('drag', ondrag_handler);
-  change_draggable_prop(draggable);
-  
+  draggableNameSet = change_draggable_prop(draggable);
 
-  if (GAME_START_FLAG == true){
-    countdown("countdown", 0, 20);
+
+
+  // if the retry button is clicked after game is finished then, 
+  // the popup window should be removed from view
+  if (event.target.id === "retry") {
+    // hide game finish popup
+    document.querySelector('.game-finish-popup').style.display = 'none';
+    
+
+    // display draggable 
+    draggable.style.display = 'block';
+    
+    // remove all colors added to dropzones from prior game play
+    let regetDropZones = document.querySelectorAll(".state");
+    regetDropZones.forEach((state) => {
+      addDropzoneListener(state);
+      state.setAttribute("style", "fill: #7c7c7c;");
+    });
+
+    // reset score
+    document.getElementById('current-score').innerText = '00';
+  }
+
+  if (GAME_START_FLAG === true){
+    countdown("countdown", 5, 20);
   }
 }
 
@@ -425,13 +542,6 @@ const startGamePlay = ( event ) => {
 
 // trigger game play using the start game button
 let startGameBtn = document.querySelector('.start-game-btn');
-startGameBtn.addEventListener('click', startGamePlay)
-
-
-
-// let timerEle = document.getElementById('timer');
-// let timeCount = 0;
-// setInterval(() => {
-//   timeCount = timeCount + 1;
-//   timerEle.innerText = timeCount;
-// }, 1000);
+let playOnBtn = document.querySelector('.retry-btn')
+startGameBtn.addEventListener('click', startGamePlay);
+playOnBtn.addEventListener('click', startGamePlay);
