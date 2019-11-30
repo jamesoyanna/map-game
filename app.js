@@ -389,7 +389,10 @@ const setPlayerName = ( name ) => {
 const startGamePlay = ( event ) => {
 
   // first retrieve the value of player-name input
-  playerName = receivePlayerName();
+  let tempName = receivePlayerName()
+  if(tempName){
+    playerName = tempName
+  }
 
   // next close the popup window
   closePopupWindow();
