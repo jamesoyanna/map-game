@@ -1,13 +1,13 @@
 /** all states in Nigeria */
 let states = [
     "oyo",          "osun",     "ekiti",      "ondo",       "crossriver",
-    // "lagos",        "kwara",    "delta",      "enugu",      "anambra",
-    // "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
-    // "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
-    // "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
-    // "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
-    // "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
-    // "bayelsa",      "edo",
+    "lagos",        "kwara",    "delta",      "enugu",      "anambra",
+    "rivers",       "kogi",     "akwaibom",   "benue",      "plateau",
+    "gombe",        "bauchi",   "kaduna",     "kebbi",      "niger",
+    "sokoto",       "zamfara",  "kano",       "jigawa",     "yobe",
+    "borno",        "taraba",   "adamawa",    "abuja",      "ogun",
+    "imo",          "abia",     "ebonyi",     "nassarawa",  "katsina",
+    "bayelsa",      "edo",
 ];
 
 let GAME_START_FLAG = false;
