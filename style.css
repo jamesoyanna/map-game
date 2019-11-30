@@ -6,7 +6,12 @@
 
 body {
   font-family: sans-serif;
+}
 
+
+.map-container {
+  display: flex;
+  height: 100vh;
 }
 
 .draggable {
@@ -42,7 +47,7 @@ body {
   padding: 20px 30px;
   text-align: center;
   border-radius: 8px;
-  background: white;
+  background: #000000;
 }
 
 .timer-container .timer-content #timer {
@@ -86,7 +91,8 @@ body {
 }
 
 .bg-green {
-  background-color: #04d304;
+  background-color: #095b09;
+  height: 100%;
 }
 
 /*
@@ -96,7 +102,7 @@ body {
 
 #countdown{
     padding: 10px 5px;
-    color: #ffffff;
+    color: #080808;
     font-size: 30px;
     font-weight: 900;
 } 
@@ -119,14 +125,14 @@ body {
 .scores .score {
   box-shadow: .5px .5px 43px -6px #98f998;
   border-radius: 6px;
-  color: black;
+  color: #fdfdfd;
   line-height: 27px;
-  padding: 3px;
+  padding: 3px 18px;
 }
 
 .scores .score p {
   font-size: 15px;
-  color: #0000008c;
+  color: #ffffffde;
 }
 
 .scores .score span {
@@ -175,11 +181,12 @@ body {
 
 
 /* startup window popup  */
+.game-finish-popup,
 .popup {
   position: absolute;
   top: 0px;
   left: 0px;
-  z-index: 2;
+  z-index: 3;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -193,6 +200,11 @@ body {
 .popup .game-name {
   color: #44ea44;
   margin-bottom: 16px;
+}
+
+.popup .game-subtitle {
+  margin-bottom: 15px;
+  color: #fff;
 }
 
 
@@ -247,6 +259,49 @@ body {
   border: 1px solid #ffeb3b;
 }
 
+
+/* game finish popup stylings */
+.game-finish-popup {
+  background: #581770;
+  display: none;
+}
+
+
+.game-finish-popup .game-finish-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.game-finish-popup .score {
+  padding: 18px;
+  border-radius: 50px;
+  background-color: #fff;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.game-finish-popup .game-finish-message {
+  font-size: 30px;
+  font-weight: 600;
+  color: #00eb0c;
+}
+
+.game-finish-popup .game-finishing-time {
+  color: #fff;
+  margin: 15px;
+}
+
+.game-finish-popup .retry-btn {
+  margin-top: 45px;
+  color: white;
+  padding: 12px 25px;
+  background-color: black;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
 /* end of startup window popup  */
 
 
@@ -282,7 +337,7 @@ body {
   }
   100% {
       opacity: 1;
-      color: black;
+      color: rgb(251, 255, 0);
       transform: translateY(0);
   }
 }
