@@ -10,6 +10,9 @@ const states = [
     "bayelsa"
 ];
 
+let GAME_START_FLAG = false;
+let playerName = 'Strange';
+
 // score gotten per correct answer
 const correctScore = 15;
 
@@ -105,18 +108,7 @@ const ondrag_handler = (event) => {
     
     console.log("drag start");
   }
-  
-  
-  /*
-      Set a listener on a draggable element and randomly set 
-      a state on the draggable that'll be displayed at first.
-  */
-  let draggable = document.querySelector('.draggable');
-  draggable.addEventListener('dragstart', ondragstart_handler);
-  draggable.addEventListener('drag', ondrag_handler);
-  change_draggable_prop(draggable);
-  
-  
+    
   
   
 /**
@@ -360,7 +352,66 @@ const countdown = (elementName, minutes, seconds) => {
   
   updateTimer();
 }
-countdown("countdown", 1, 20);
+
+
+/**
+ * retrieve and returns players name only if the retrieved value is 
+ * not an empty string
+ * 
+ * @returns {String}
+ */
+const receivePlayerName = () => {
+  let retrievedName = document.getElementById('id_player_name').value;
+  document.getElementById('id_player_name').value = '';
+
+  if (retrievedName != ''){
+    return retrievedName
+  }
+}
+
+/**
+ * Hides the startup screen called popup window
+ */
+const closePopupWindow = () => {
+  document.querySelector('.popup').style.display = 'none';
+}
+
+
+const startGamePlay = ( event ) => {
+
+  // first retrieve the value of player-name input
+  playerName = receivePlayerName();
+
+  // next close the popup window
+  closePopupWindow();
+
+  // set game start to true
+  GAME_START_FLAG = true;
+
+
+
+  /*
+    Set a listener on a draggable element and randomly set 
+    a state on the draggable that'll be displayed at first.
+  */
+  let draggable = document.querySelector('.draggable');
+  draggable.addEventListener('dragstart', ondragstart_handler);
+  draggable.addEventListener('drag', ondrag_handler);
+  change_draggable_prop(draggable);
+  
+
+  if (GAME_START_FLAG == true){
+    countdown("countdown", 1, 20);
+  }
+}
+
+
+
+
+// trigger game play using the start game button
+let startGameBtn = document.querySelector('.start-game-btn');
+startGameBtn.addEventListener('click', startGamePlay)
+
 
 
 // let timerEle = document.getElementById('timer');

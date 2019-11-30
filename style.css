@@ -169,6 +169,82 @@ body {
   font-weight: 600;
 }
 
+
+/* receiving input */
+.popup {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  padding: 50px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #581770;
+}
+
+.popup .game-name {
+  color: #44ea44;
+  margin-bottom: 16px;
+}
+
+
+.popup .popup-nav {
+  width: 100%;
+  padding: 10px 40px;
+  margin-bottom: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.popup .popup-nav .section {
+  box-shadow: .2px .2px 10px -2px #98f998;
+  margin: 0px 18px;
+  text-align: center;
+  border-radius: 6px;
+  line-height: 27px;
+  padding: 8px;
+  min-width: 80px;
+
+  transition: .3s ease-in;
+}
+
+.popup .popup-nav .section:hover {
+  box-shadow: .2px .2px 20px -2px #98f998;
+}
+
+.popup .popup-nav .section p {
+  color: #fbff05; 
+}
+
+.popup .popup-nav .section span {
+  color: #7bde7b;
+}
+
+
+.popup .text-input {
+  width: 300px;
+  padding: 8px;
+  outline: none;
+  font-size: 14px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.popup  a.start-game-btn {
+  color: #fff;
+  padding: 8px;
+  display: block;
+  margin-top: 28px;
+  width: fit-content;
+  text-decoration: none;
+  border: 1px solid #ffeb3b;
+}
+
+
+
 /*
   end of target and level styling
 */
